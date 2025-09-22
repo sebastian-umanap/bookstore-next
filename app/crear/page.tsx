@@ -78,59 +78,45 @@ export default function CrearAutorPage() {
     }
   }
 
+  const inputClass =
+    "mt-1 w-full rounded border px-3 py-2 bg-white text-gray-900 placeholder:text-gray-500 " +
+    "focus:outline-none focus:ring-2 focus:ring-gray-400 " +
+    "dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-400 dark:border-zinc-700";
+
   return (
-    <section className="rounded-2xl border bg-white p-4">
-      <h2 className="mb-2 text-xl font-semibold">Crear autor</h2>
+    <section className="rounded-xl border p-4 bg-white text-gray-900 dark:bg-zinc-900 dark:text-zinc-100 dark:border-zinc-700">
+      <h2 className="mb-2 text-lg font-semibold">Crear autor</h2>
 
       <form onSubmit={onSubmit} noValidate className="grid max-w-xl gap-3">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Nombre</label>
-          <input
-            name="name"
-            placeholder="Ej: J. K. Rowling"
-            required
-            minLength={2}
-            maxLength={80}
-            className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-gray-500"
-          />
+          <label className="text-sm">Nombre</label>
+          <input name="name" placeholder="Ej: J. K. Rowling" required minLength={2} maxLength={80} className={inputClass} />
           {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Descripción</label>
+          <label className="text-sm">Descripción</label>
           <textarea
             name="description"
             placeholder="Breve biografía o descripción..."
             required
             minLength={10}
             maxLength={600}
-            className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 min-h-24"
+            className={`${inputClass} min-h-24`}
           />
           {errors.description && <p className="mt-1 text-xs text-red-600">{errors.description}</p>}
         </div>
 
         <div className="grid gap-3 sm:grid-cols-2">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Fecha de nacimiento</label>
-            <input
-              type="date"
-              name="birthDate"
-              required
-              min="1800-01-01"
-              max={todayISO}
-              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-gray-500"
-            />
+            <label className="text-sm">Fecha de nacimiento</label>
+            <input type="date" name="birthDate" required min="1800-01-01" max={todayISO} className={inputClass} />
             {errors.birthDate && <p className="mt-1 text-xs text-red-600">{errors.birthDate}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">URL de imagen</label>
-            <input
-              name="image"
-              placeholder="https://.../foto.jpg"
-              required
-              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-gray-500"
-            />
+            <label className="text-sm">URL de imagen</label>
+            <input name="image" placeholder="https://.../foto.jpg" required className={inputClass} />
             {errors.image && <p className="mt-1 text-xs text-red-600">{errors.image}</p>}
           </div>
         </div>
@@ -141,14 +127,11 @@ export default function CrearAutorPage() {
           <button
             type="submit"
             disabled={sending}
-            className="rounded-lg border border-gray-900 bg-gray-900 px-4 py-2 text-white disabled:opacity-60"
+            className="rounded border px-4 py-2 bg-gray-900 text-white disabled:opacity-60 dark:bg-zinc-200 dark:text-zinc-900"
           >
             {sending ? "Guardando..." : "Guardar"}
           </button>
-          <a
-            href="/authors"
-            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 hover:bg-gray-50"
-          >
+          <a href="/authors" className="rounded border px-4 py-2 hover:bg-gray-100 dark:hover:bg-zinc-800">
             Cancelar
           </a>
         </div>
