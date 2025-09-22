@@ -85,8 +85,8 @@ export default function EditAuthorPage() {
       }
     }
 
-    const urlOk = /^https?:\/\/.+/i.test(vImg);
-    const extOk = /\.(png|jpe?g|webp|gif|bmp|svg)(\?.*)?$/i.test(vImg);
+    const urlOk = /^https?:\/\/.+/i.test(vImg); //expresiones regulares para validar que inicie con http o https, sirven los dos casos.
+    const extOk = /\.(png|jpe?g|webp|gif|bmp|svg)(\?.*)?$/i.test(vImg); //experesiones regulares para validar el tipo de archivo en la url
     if (!vImg) e.image = "La URL de imagen es requerida.";
     else if (!urlOk) e.image = "Debe iniciar con http:// o https://";
     else if (!extOk) e.image = "Debe ser una imagen (.jpg, .png, .webp, etc.).";
@@ -105,28 +105,33 @@ export default function EditAuthorPage() {
       return;
     }
 
-    try {
+    try // se hace try catch por si la api no responde o da error, evitando posibles errores. 
+    {
       setSaving(true);
       await fetch(`http://127.0.0.1:8080/api/authors/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           id: Number(id),
-          ...values,
-          books: books ?? [],
-          prizes: prizes ?? [],
+          ...values, //con esto se copian los valores del objeto values, operación spread
+          books: books ?? [], //si books es null o undefined, se envía un array vacío
+          prizes: prizes ?? [], //si prizes es null o undefined, se envía un array vacío
+          //estos dos casos pueden suceder quizás a la hora de crear el autor y no tener libros, o que simplemente no tenga premios como tal.
         }),
       });
       router.push("/authors");
       router.refresh();
-    } catch {
+    } catch 
+    {
       setErrors({ general: "No se pudo actualizar. Revisa la API." });
-    } finally {
+    } finally 
+    {
       setSaving(false);
     }
   }
 
-  if (loading) {
+  if (loading) 
+  {
     return (
       <section className="rounded-2xl border bg-white p-4">
         <p className="text-gray-600">Cargando autor...</p>
@@ -140,46 +145,34 @@ export default function EditAuthorPage() {
 
   <form onSubmit={onSubmit} noValidate className="grid max-w-xl gap-4">
     <div>
-      <label className="block text-sm font-medium text-gray-900 dark:text-zinc-100">Nombre</label>
+      <label className="grid gap-3 sm:grid-cols-2">Nombre</label>
       <input
         value={name}
         onChange={(e) => setName(e.target.value)}
         required minLength={2} maxLength={80}
-        className="mt-1 w-full rounded-lg border px-3 py-2
-                   border-gray-300 bg-white text-gray-900 placeholder:text-gray-500
-                   focus:border-gray-600 focus:outline-none
-                   dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-400"
-      />
+        className="mt-1 w-full min-h-24 rounded-lg border px-3 py-2 border-gray-300 bg-white text-gray-900 placeholder:text-gray-500 focus:border-gray-600"/>
       {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name}</p>}
     </div>
 
     <div>
-      <label className="block text-sm font-medium text-gray-900 dark:text-zinc-100">Descripción</label>
+      <label className="grid gap-3 sm:grid-cols-2">Descripción</label>
       <textarea
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         required minLength={10} maxLength={600}
-        className="mt-1 w-full min-h-24 rounded-lg border px-3 py-2
-                   border-gray-300 bg-white text-gray-900 placeholder:text-gray-500
-                   focus:border-gray-600 focus:outline-none
-                   dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-400"
-      />
+        className="mt-1 w-full min-h-24 rounded-lg border px-3 py-2 border-gray-300 bg-white text-gray-900 placeholder:text-gray-500 focus:border-gray-600"/>
       {errors.description && <p className="mt-1 text-xs text-red-500">{errors.description}</p>}
     </div>
 
     <div className="grid gap-4 sm:grid-cols-2">
       <div>
-        <label className="block text-sm font-medium text-gray-900 dark:text-zinc-100">Fecha de nacimiento</label>
+        <label className="grid gap-3 sm:grid-cols-2">Fecha de nacimiento</label>
         <input
           type="date"
           value={birthDate}
           onChange={(e) => setBirthDate(e.target.value)}
           required min="1800-01-01" max={todayISO}
-          className="mt-1 w-full rounded-lg border px-3 py-2
-                     border-gray-300 bg-white text-gray-900
-                     focus:border-gray-600 focus:outline-none
-                     dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
-        />
+          className="mt-1 w-full rounded-lg border px-3 py-2 border-gray-300 bg-white text-gray-900 focus:border-gray-600"/>
         {errors.birthDate && <p className="mt-1 text-xs text-red-500">{errors.birthDate}</p>}
       </div>
 
@@ -189,11 +182,7 @@ export default function EditAuthorPage() {
           value={image}
           onChange={(e) => setImage(e.target.value)}
           required placeholder="https://.../foto.jpg"
-          className="mt-1 w-full rounded-lg border px-3 py-2
-                     border-gray-300 bg-white text-gray-900 placeholder:text-gray-500
-                     focus:border-gray-600 focus:outline-none
-                     dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-400"
-        />
+          className="mt-1 w-full rounded-lg border px-3 py-2 border-gray-300 bg-white text-gray-900 focus:border-gray-600"/>
         {errors.image && <p className="mt-1 text-xs text-red-500">{errors.image}</p>}
       </div>
     </div>
@@ -203,16 +192,12 @@ export default function EditAuthorPage() {
     <div className="mt-1 flex gap-2">
       <button
         type="submit" disabled={saving}
-        className="rounded-lg border border-gray-900 bg-gray-900 px-4 py-2 text-white
-                   disabled:opacity-60 dark:border-zinc-200 dark:bg-zinc-200 dark:text-zinc-900"
-      >
+        className="rounded-lg border border-gray-900 bg-gray-900 px-4 py-2 text-white">
         {saving ? "Guardando..." : "Guardar cambios"}
       </button>
       <a
         href="/authors"
-        className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 hover:bg-gray-50
-                   dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700"
-      >
+        className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 hover:bg-gray-50 dark:border-zinc-700">
         Cancelar
       </a>
     </div>

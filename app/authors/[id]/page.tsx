@@ -15,21 +15,18 @@ async function getAuthor(id: number): Promise<Author> {
 export default async function AuthorDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string }>; //se hace promise porque es asincrono
 }) {
   const { id } = await params;
-  const a = await getAuthor(Number(id));
+  const a = await getAuthor(Number(id)); //await porque es asincrono
 
   return (
     <section className="mx-auto max-w-3xl space-y-3">
-      <a href="/authors" className="inline-block text-sm opacity-70 hover:opacity-100">
-        ← Volver
-      </a>
+      <a href="/authors" className="inline-block text-sm opacity-70 hover:opacity-100">← Volver </a> 
 
-        <article key={a.id} className="rounded-xl border p-4 bg-white text-gray-900 dark:bg-zinc-900 dark:text-zinc-100">
+        <article key={a.id} className="rounded-xl border p-4 bg-white text-gray-900 dark:bg-zinc-900 dark:text-zinc-100 dark:border-zinc-700">
           <div className="flex items-start gap-4">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={a.image} alt={a.name} className="h-28 w-24 rounded object-cover bg-gray-100 dark:bg-zinc-800" />
+            <img src={a.image} alt={a.name} className="block text-sm font-medium text-gray-900 dark:text-zinc-100" />
             <div className="flex-1">
               <h2 className="text-xl font-semibold">{a.name}</h2>
               <p className="text-sm opacity-70">Nacimiento: {a.birthDate}</p>
@@ -39,7 +36,6 @@ export default async function AuthorDetailPage({
               <div className="mt-4 flex gap-2">
                 <form method="post">
                   <input type="hidden" name="id" value={a.id} />
-     
                 </form>
               </div>
 

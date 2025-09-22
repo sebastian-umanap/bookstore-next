@@ -8,11 +8,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <header className="border-b bg-white dark:bg-zinc-900 dark:border-zinc-800">
           <div className="mx-auto flex max-w-4xl items-center gap-3 px-4 py-3">
             <a href="/authors" className="font-bold">Autores</a>
-            <a
-              href="/crear"
-              className="ml-auto rounded-lg border border-gray-300 px-3 py-1.5 text-sm hover:bg-gray-50
-                         dark:border-zinc-700 dark:hover:bg-zinc-800"
-            >
+            <a href="/crear"className="ml-auto rounded-lg border border-gray-300 px-3 py-1.5 text-sm hover:bg-gray-50 dark:border-zinc-700 dark:hover:bg-zinc-800">
               Crear autor
             </a>
           </div>
